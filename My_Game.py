@@ -11,19 +11,16 @@ littleSpace = 4
 midSpace = 10
 bigSpace = 15
 buttonSpace = 14
-halfButtonWidth = 49.5
+buttonWidth = 99
 buttonY = 400
 fontScoreSize = 36
 fontButtonSize = 15
 winScore = 100000
-antialias = 1
 worker = [0, 0, 0]
 workerPrice = [100, 200, 500]
 workerProd = [1, 3, 9]
 text1Coord = [90, 50]
-touchConstants = [1, 1]
-buttonConstantsWidth = [1, 3, 5]
-buttonWhiteSpace = [0, 1, 2]
+global WHITE
 WHITE = (255, 255, 255)
 
 # Создаем игру и окно
@@ -32,8 +29,8 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
-buttonImage = pygame.image.load('images/Button.png')
-background = pygame.image.load('images/Background.jpg')
+buttonImage = pygame.image.load('Button.png')
+background = pygame.image.load('Background.jpg')
 fontScore = pygame.font.Font(None, fontScoreSize)
 fontButton = pygame.font.Font(None, fontButtonSize)
 
@@ -50,7 +47,7 @@ class Button(pygame.sprite.Sprite):
 class Touch(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = pygame.Rect(x, y, touchConstants[0], touchConstants[1])
+        self.rect = pygame.Rect(x, y, 1, 1)
         self.rect.center = (x, y)
 
 
@@ -83,19 +80,19 @@ def blitAll(background, text1, screen, buttonText, button1, button2, button3):
 
 
 def renderALL(buttonText):
-    buttonText[0][0] = fontButton.render('Price: 100 Leaves', antialias, WHITE)
-    buttonText[0][1] = fontButton.render('1 Leaf / Second', antialias, WHITE)
-    buttonText[1][0] = fontButton.render('Price: 200 Leaves', antialias, WHITE)
-    buttonText[1][1] = fontButton.render('3 Leaves / Second', antialias, WHITE)
-    buttonText[2][0] = fontButton.render('Price: 500 Leaves', antialias, WHITE)
-    buttonText[2][1] = fontButton.render('9 Leaves / Second', antialias, WHITE)
+    buttonText[0][0] = fontButton.render('Price: 100 Leaves', 1, WHITE)
+    buttonText[0][1] = fontButton.render('1 Leaf / Second', 1, WHITE)
+    buttonText[1][0] = fontButton.render('Price: 200 Leaves', 1, WHITE)
+    buttonText[1][1] = fontButton.render('3 Leaves / Second', 1, WHITE)
+    buttonText[2][0] = fontButton.render('Price: 500 Leaves', 1, WHITE)
+    buttonText[2][1] = fontButton.render('9 Leaves / Second', 1, WHITE)
 
 # Подготовка к циклу игры
 running = True
 all_sprites = pygame.sprite.Group()
-button1 = Button((halfButtonWidth + buttonSpace, buttonY))
-button2 = Button((buttonConstantsWidth[1] * halfButtonWidth + buttonSpace + buttonWhiteSpace[1] * whiteSpace, buttonY))
-button3 = Button((buttonConstantsWidth[2] * halfButtonWidth + buttonSpace + buttonWhiteSpace[2] * whiteSpace, buttonY))
+button1 = Button((buttonWidth / 2 + buttonSpace, buttonY))
+button2 = Button((3 * buttonWidth / 2 + buttonSpace + whiteSpace, buttonY))
+button3 = Button((5 * buttonWidth / 2 + buttonSpace + 2 * whiteSpace, buttonY))
 sprites = [button1, button2, button3]
 all_sprites.add(sprites)
 buttonText = [[0, 0], [0, 0], [0, 0]]
@@ -125,7 +122,7 @@ while running:
             score = checkTouch(score, sprites, Click, worker)
 
     # Рендеринг
-    text1 = fontScore.render(f'Your leaves : {str(score)}', antialias, WHITE)
+    text1 = fontScore.render('Your leaves : ' + str(score), 1, WHITE)
     renderALL(buttonText)
     blitAll(background, text1, screen, buttonText, button1, button2, button3)
     # После отрисовки всего, переворачиваем экран
